@@ -7,13 +7,12 @@
         "test": "npx cucumber-js --require ./steps/*.js  --publish --format json:reports/mochawesome-report.json",
         "merge-reports": "mochawesome-merge reports/*.json > reports/mochawesome-merged.json",
         "generate-html-report": "marge reports/mochawesome-merged.json --reportDir reports"
-
-
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@cucumber/cucumber": "^10.1.0",
         "@playwright/test": "^1.38.1",
         "@types/node": "^20.8.3",
         "mochawesome": "^7.1.3",
@@ -21,7 +20,6 @@
         "mochawesome-report-generator": "^6.2.0"
     },
     "dependencies": {
-        "@cucumber/cucumber": "^9.6.0",
         "dotenv": "^16.3.1"
     }
 }

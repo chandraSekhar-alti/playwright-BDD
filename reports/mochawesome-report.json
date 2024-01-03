@@ -6,7 +6,7 @@
         "description": "",
         "id": "login-feature;login-to-orangehrm",
         "keyword": "Scenario",
-        "line": 10,
+        "line": 11,
         "name": "Login to OrangeHRM",
         "steps": [
           {
@@ -14,7 +14,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 6144651500
+              "duration": 1677306699
             }
           },
           {
@@ -23,11 +23,11 @@
             "line": 4,
             "name": "I am on the OrangeHRM Login page",
             "match": {
-              "location": "steps\\loginSteps.js:6"
+              "location": "steps\\loginSteps.js:5"
             },
             "result": {
               "status": "passed",
-              "duration": 17518286599
+              "duration": 10290795000
             }
           },
           {
@@ -36,11 +36,11 @@
             "line": 5,
             "name": "I verified the OrangeHRM Login page",
             "match": {
-              "location": "steps\\loginSteps.js:11"
+              "location": "steps\\loginSteps.js:9"
             },
             "result": {
               "status": "passed",
-              "duration": 122625199
+              "duration": 70193599
             }
           },
           {
@@ -49,11 +49,24 @@
             "line": 6,
             "name": "I login OrangeHRM with Admin and admin123",
             "match": {
-              "location": "steps\\loginSteps.js:18"
+              "location": "steps\\loginSteps.js:15"
             },
             "result": {
               "status": "passed",
-              "duration": 6213573599
+              "duration": 6114945499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "I verified the Home page of the OrangeHRM",
+            "match": {
+              "location": "steps\\loginSteps.js:20"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 29438097100
             }
           }
         ],

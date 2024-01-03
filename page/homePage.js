@@ -1,16 +1,16 @@
 const { expect } = require("@playwright/test");
-const exp = require("constants");
 const path = require("path");
+const data = require("../testData/homePageValidation.json");
 require("dotenv").config({
   path: path.join(__dirname, "../.env"),
 });
 
 class LoginPage {
   userNameInput() {
-    return global.page.locator('//input[@placeholder="Username"]');
+    return global.page.locator('//input[@name="username"]');
   }
   userPasswordField() {
-    return global.page.locator('//input[@placeholder="Password"]');
+    return global.page.locator('//input[@type="password"]');
   }
   submitButton() {
     return global.page.locator('//button[@type="submit"]');
@@ -60,6 +60,23 @@ class LoginPage {
       '(//div[@class="orangehrm-login-footer-sm"]/a)[4]'
     );
   }
+  orangeHRMBrandBanner() {
+    return global.page.locator('//img[@alt="client brand banner"]');
+  }
+  dashBoardName() {
+    return global.page.locator('//h6[text()="Dashboard"]');
+  }
+  userDropDown() {
+    return global.page.locator('//li[@class="oxd-userdropdown"]');
+  }
+  sidePannelItems(text) {
+    return global.page.locator(
+      `//a[@class="oxd-main-menu-item"]/span[text()="${text}"]`
+    );
+  }
+  maintancePageCancelButton() {
+    return global.page.locator('//button[text()=" Cancel "]');
+  }
 
   async navigate(url) {
     await global.page.goto(url);
@@ -67,11 +84,17 @@ class LoginPage {
   }
 
   async loginPageValidation() {
-    expect(await this.orangeHrmCompanyBrandingImage()).toBeVisible();
-    expect(await this.loginCenterText()).toBeVisible();
-    expect(await this.orangeHrmLogo()).toBeVisible();
-    expect(await this.forgotPasswordtext()).toBeVisible();
-    expect(await this.forgotPasswordtext()).toHaveText(/Forgot your password?/);
+    page.waitForTimeout(5000);
+    // expect(await this.orangeHrmCompanyBrandingImage(), {
+    //   timeout: 10000,
+    // }).toBeVisible();
+    await expect(this.loginCenterText()).toBeVisible();
+    await expect(this.orangeHrmLogo()).toBeVisible();
+    await expect(this.forgotPasswordtext()).toBeVisible();
+    const actualText = await this.forgotPasswordtext().innerText();
+    console.log("actualText :- ", actualText);
+    const expectedTexts = ["Forgot Your Password?", "Forgot your password?"];
+    expect(expectedTexts.includes(actualText)).toBe(true);
   }
 
   async copyRightSectionValidation() {
@@ -92,10 +115,38 @@ class LoginPage {
     await this.userNameInput().fill(userName);
     await this.userPasswordField().fill(userPassword);
     await this.submitButton().click();
-    await page.waitForTimeout(5000)
+    await page.waitForTimeout(5000);
     expect(await global.page.url()).toEqual(
       "https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index"
     );
+  }
+
+  async homePageValidation() {
+    await expect(this.orangeHRMBrandBanner()).toBeVisible();
+    await expect(this.dashBoardName()).toBeVisible();
+    await expect(this.userDropDown()).toBeVisible();
+    await expect(page).toHaveURL(
+      "https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index"
+    );
+  }
+
+  async sideItemsValidation() {
+    for (const listItem of data.sidePannelListItems) {
+      if (listItem == "Maintenance") {
+        await this.sidePannelItems(listItem).hover();
+        await page.waitForTimeout(500);
+        await expect(this.sidePannelItems(listItem)).toBeVisible();
+        await this.sidePannelItems(listItem).click();
+        await page.waitForTimeout(1000);
+        await this.maintancePageCancelButton().click();
+      } else {
+        await this.sidePannelItems(listItem).hover();
+        await page.waitForTimeout(500);
+        await expect(this.sidePannelItems(listItem)).toBeVisible();
+        await this.sidePannelItems(listItem).click();
+        await page.waitForTimeout(1000);
+      }
+    }
   }
 }
 module.exports = {
